@@ -5,5 +5,4 @@ from .models import Experience
 
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'company', 'start_date', 'end_date', 'is_project')
-    list_filter = ('is_project',)
+    list_display = ('title', 'company', 'start_date', 'end_date')

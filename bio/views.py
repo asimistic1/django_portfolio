@@ -8,8 +8,9 @@ from skills.models import Skill
 
 
 def index(request):
+    """Single portfolio page — loads all content from the five apps."""
     context = {
-        'bios': Bio.objects.all(),
+        'bio': Bio.objects.first(),
         'education': Education.objects.all(),
         'skills': Skill.objects.all(),
         'experiences': Experience.objects.all(),

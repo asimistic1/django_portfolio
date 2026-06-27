@@ -3,47 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        {% if bios %}
-            {{ bios.0.name }} | Portfolio
-        {% else %}
-            My Portfolio
-        {% endif %}
-    </title>
+    <title>{% if bio %}{{ bio.name }} | Portfolio{% else %}My Portfolio{% endif %}</title>
     <style>
-        /* CSS variables — colours used across the page */
+        /* Colour variables — change the whole theme from here */
         :root {
-            --navy: #0b1220;
-            --navy-mid: #151f32;
-            --blue: #3b82f6;
-            --blue-glow: rgba(59, 130, 246, 0.35);
-            --gold: #e8a838;
-            --cream: #f4f6fa;
+            --navy: #080d18;
+            --indigo: #6366f1;
+            --violet: #8b5cf6;
+            --sky: #38bdf8;
+            --gold: #d4a05a;
+            --gold-light: #d4af6a;
             --white: #ffffff;
-            --text: #2d3748;
-            --muted: #718096;
-            --border: #e8edf4;
-            --card-bg: #ffffff;
-            --radius: 18px;
-            --shadow: 0 8px 32px rgba(11, 18, 32, 0.07);
-            --shadow-lg: 0 20px 50px rgba(11, 18, 32, 0.12);
+            --text: #1a1f2e;
+            --muted: #64748b;
+            --brand: linear-gradient(145deg, #1a1f2e 0%, #4338ca 100%);
+            --accent: linear-gradient(90deg, var(--indigo), var(--sky));
+            --page-base: #dce3ef;
+            --page-bg: linear-gradient(165deg, #e8edf5 0%, #dde5f2 35%, #e4e0f0 70%, #dfe8f0 100%);
+            --bg-education: linear-gradient(160deg, #f8fafd 0%, #e9effa 100%);
+            --bg-skills: linear-gradient(160deg, #f9f8fd 0%, #eceaf8 100%);
+            --bg-experience: linear-gradient(160deg, #f7fbfb 0%, #e5f2ef 100%);
+            --bg-projects: linear-gradient(160deg, #fbfaf7 0%, #f0ebe3 100%);
+            --bg-card: linear-gradient(160deg, #ffffff 0%, #f7f9fc 100%);
+            --bg-card-hover: linear-gradient(160deg, #ffffff 0%, #eef3fb 100%);
+            --border: rgba(148, 163, 184, 0.25);
+            --radius: 20px;
+            --shadow: 0 16px 48px rgba(30, 41, 59, 0.08);
+            --shadow-sm: 0 6px 24px rgba(30, 41, 59, 0.06);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-color: var(--page-base);
+            background-image:
+                radial-gradient(ellipse at 10% 15%, rgba(99, 102, 241, 0.14) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 10%, rgba(56, 189, 248, 0.12) 0%, transparent 48%),
+                radial-gradient(ellipse at 85% 85%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                var(--page-bg);
+        }
 
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             line-height: 1.7;
             color: var(--text);
-            background-color: var(--cream);
-            /* subtle dot pattern */
-            background-image: radial-gradient(circle, #d1d9e6 1px, transparent 1px);
-            background-size: 24px 24px;
         }
 
-        a { color: var(--blue); text-decoration: none; }
+        a { color: #5b54e8; text-decoration: none; }
 
         .container {
             max-width: 1000px;
@@ -51,12 +62,12 @@
             padding: 0 1.5rem;
         }
 
-        /* ── Navbar ── */
+        /* Navbar */
         .navbar-wrap {
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 0.75rem 1.5rem 0;
+            padding: 0.85rem 1.5rem 0;
         }
 
         .navbar {
@@ -66,64 +77,59 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            padding: 0.7rem 1.25rem;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
+            padding: 0.65rem 1.25rem;
+            background: rgba(248, 250, 253, 0.88);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
             border-radius: 999px;
-            box-shadow: 0 4px 30px rgba(11, 18, 32, 0.08);
+            box-shadow: var(--shadow-sm);
         }
 
         .navbar-brand {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.65rem;
             font-weight: 700;
-            font-size: 0.95rem;
             color: var(--navy);
         }
 
         .brand-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--navy), var(--blue));
+            width: 34px;
+            height: 34px;
+            background: var(--brand);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--gold-light);
             font-size: 0.75rem;
             font-weight: 800;
-            flex-shrink: 0;
         }
 
         .navbar-links {
             list-style: none;
             display: flex;
             flex-wrap: wrap;
-            gap: 0.2rem;
+            gap: 0.25rem;
         }
 
         .navbar-links a {
-            display: block;
-            padding: 0.4rem 0.85rem;
-            font-size: 0.82rem;
+            padding: 0.42rem 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
             color: var(--muted);
             border-radius: 999px;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         .navbar-links a:hover {
-            background: var(--navy);
-            color: var(--white);
-            box-shadow: 0 4px 14px rgba(11, 18, 32, 0.2);
+            background: var(--brand);
+            color: var(--gold-light);
         }
 
-        /* ── Hero ── */
+        /* Hero — unchanged design */
         .hero {
-            background: linear-gradient(160deg, var(--navy) 0%, #1a2d4a 45%, var(--navy-mid) 100%);
+            background: linear-gradient(135deg, #060a14 0%, #1e1b4b 30%, #312e81 60%, #1a2744 100%);
             color: var(--white);
             padding: 3.5rem 0 6rem;
             position: relative;
@@ -131,7 +137,6 @@
             margin-top: -0.5rem;
         }
 
-        /* decorative glow circles */
         .hero-glow {
             position: absolute;
             border-radius: 50%;
@@ -139,21 +144,24 @@
         }
 
         .hero-glow-1 {
-            width: 420px; height: 420px;
-            top: -120px; right: -80px;
-            background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+            width: 500px; height: 500px;
+            top: -150px; right: -100px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, transparent 65%);
         }
 
         .hero-glow-2 {
-            width: 300px; height: 300px;
-            bottom: -80px; left: -60px;
-            background: radial-gradient(circle, rgba(232, 168, 56, 0.15) 0%, transparent 70%);
+            width: 400px; height: 400px;
+            bottom: -100px; left: -80px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 65%);
         }
 
-        .hero-inner {
-            position: relative;
-            z-index: 1;
+        .hero-glow-3 {
+            width: 250px; height: 250px;
+            top: 40%; left: 45%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
         }
+
+        .hero-inner { position: relative; z-index: 1; }
 
         .hero-badge {
             display: inline-flex;
@@ -163,12 +171,12 @@
             font-weight: 600;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #93c5fd;
+            color: #c4b5fd;
             margin-bottom: 1.25rem;
             padding: 0.4rem 1rem;
-            border: 1px solid rgba(147, 197, 253, 0.3);
+            border: 1px solid rgba(196, 181, 253, 0.35);
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(139, 92, 246, 0.12);
         }
 
         .hero-badge::before {
@@ -176,7 +184,6 @@
             width: 6px; height: 6px;
             background: #4ade80;
             border-radius: 50%;
-            box-shadow: 0 0 8px #4ade80;
         }
 
         .hero h1 {
@@ -190,7 +197,7 @@
         .hero .job-title {
             font-size: 1.2rem;
             font-weight: 500;
-            color: var(--gold);
+            color: #d4a05a;
             margin-bottom: 1.5rem;
         }
 
@@ -199,11 +206,11 @@
             font-size: 1.05rem;
             color: rgba(255, 255, 255, 0.78);
             line-height: 1.8;
-            border-left: 3px solid var(--gold);
+            border-left: 3px solid #d4a05a;
             padding-left: 1.25rem;
         }
 
-        /* ── Main content ── */
+        /* Main content */
         main {
             margin-top: -3rem;
             padding-bottom: 4rem;
@@ -212,13 +219,17 @@
         }
 
         section {
-            background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             padding: 2.5rem 2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
             border: 1px solid var(--border);
         }
+
+        #education  { background: var(--bg-education); }
+        #skills     { background: var(--bg-skills); }
+        #experience { background: var(--bg-experience); }
+        #projects   { background: var(--bg-projects); }
 
         .section-header {
             display: flex;
@@ -228,69 +239,54 @@
         }
 
         .section-icon {
-            width: 44px; height: 44px;
-            background: linear-gradient(135deg, var(--navy), var(--blue));
-            border-radius: 12px;
+            width: 46px; height: 46px;
+            background: var(--brand);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
             flex-shrink: 0;
-            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
         }
 
         .section-header h2 {
-            font-size: 1.45rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--navy);
-            letter-spacing: -0.02em;
         }
 
         .section-header .eyebrow {
             display: block;
             font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: var(--blue);
+            color: var(--indigo);
             margin-bottom: 0.2rem;
         }
 
         .section-header .divider {
-            width: 40px; height: 3px;
-            background: linear-gradient(90deg, var(--blue), var(--gold));
+            width: 48px; height: 3px;
+            background: var(--accent);
             border-radius: 999px;
-            margin-top: 0.5rem;
+            margin-top: 0.55rem;
         }
 
-        /* ── Education cards ── */
-        .card {
-            position: relative;
-            padding: 1.4rem 1.4rem 1.4rem 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-radius: 14px;
+        /* Shared card styles */
+        .card, .skill-item, .experience-item, .project-item {
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--blue), var(--gold));
-            border-radius: 14px 0 0 14px;
+        .card:hover, .skill-item:hover, .experience-item:hover, .project-item:hover {
+            background: var(--bg-card-hover);
+            box-shadow: 0 12px 32px rgba(30, 41, 59, 0.1);
         }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .card:last-child { margin-bottom: 0; }
-
-        .card h3 {
+        .card h3, .skill-item h3, .experience-item h3, .project-item h3 {
             font-size: 1.05rem;
             font-weight: 700;
             color: var(--navy);
@@ -303,136 +299,105 @@
             margin-bottom: 0.6rem;
         }
 
-        /* ── Skills grid ── */
+        .empty-message {
+            color: var(--muted);
+            font-style: italic;
+            font-size: 0.92rem;
+        }
+
+        /* Education */
+        .card {
+            position: relative;
+            padding: 1.5rem 1.5rem 1.5rem 2rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 16px 0 0 16px;
+        }
+
+        .card:hover { transform: translateY(-4px); }
+        .card:last-child { margin-bottom: 0; }
+
+        /* Skills */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+            gap: 1.1rem;
         }
 
         .skill-item {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.2rem;
+            padding: 1.3rem;
             position: relative;
             overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .skill-item::after {
+        .skill-item::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--blue), var(--gold));
+            background: linear-gradient(90deg, var(--indigo), var(--violet), var(--sky));
         }
 
-        .skill-item:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .skill-item h3 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.45rem;
-            margin-top: 0.25rem;
-        }
+        .skill-item h3 { margin-top: 0.3rem; }
+        .skill-item:hover { transform: translateY(-5px); }
 
         .badge {
             display: inline-block;
-            background: var(--navy);
-            color: var(--white);
+            background: var(--brand);
+            color: var(--gold-light);
             font-size: 0.68rem;
             font-weight: 600;
-            padding: 0.2rem 0.65rem;
+            padding: 0.22rem 0.7rem;
             border-radius: 999px;
             margin-bottom: 0.4rem;
         }
 
-        /* ── Experience timeline ── */
+        /* Experience */
         .experience-item {
             position: relative;
-            padding: 0 0 1.5rem 1.75rem;
-            border-left: 2px solid var(--border);
+            padding: 1.25rem 1.25rem 1.25rem 1.85rem;
             margin-left: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--indigo);
+            border-radius: 0 16px 16px 0;
         }
 
         .experience-item::before {
             content: '';
             position: absolute;
-            left: -7px; top: 4px;
-            width: 12px; height: 12px;
-            background: var(--blue);
+            left: -8px; top: 1.4rem;
+            width: 13px; height: 13px;
+            background: var(--accent);
             border: 2px solid var(--white);
             border-radius: 50%;
-            box-shadow: 0 0 0 2px var(--blue);
         }
 
-        .experience-item:last-child {
-            padding-bottom: 0;
-            border-left-color: transparent;
-        }
+        .experience-item:hover { transform: translateX(5px); }
+        .experience-item:last-child { margin-bottom: 0; }
 
-        .experience-item h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.35rem;
-        }
-
-        .tag {
-            display: inline-block;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            padding: 0.2rem 0.55rem;
-            border-radius: 6px;
-            margin-left: 0.4rem;
-            vertical-align: middle;
-        }
-
-        .tag-work { background: #dbeafe; color: #1d4ed8; }
-        .tag-project { background: #fef3c7; color: #b45309; }
-
-        /* ── Project cards ── */
+        /* Projects */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
+            gap: 1.1rem;
         }
 
         .project-item {
-            padding: 1.5rem;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            padding: 1.6rem;
             display: flex;
             flex-direction: column;
         }
 
-        .project-item:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: rgba(59, 130, 246, 0.4);
-        }
-
-        .project-item h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-        }
-
-        .project-item p {
-            font-size: 0.92rem;
-            color: var(--text);
-            flex: 1;
-        }
+        .project-item:hover { transform: translateY(-5px); }
+        .project-item p { font-size: 0.92rem; flex: 1; }
 
         .project-link {
             display: inline-flex;
@@ -441,73 +406,48 @@
             margin-top: 1rem;
             font-size: 0.82rem;
             font-weight: 600;
-            color: var(--white);
-            padding: 0.45rem 1rem;
+            color: var(--gold-light);
+            padding: 0.48rem 1.1rem;
             border-radius: 999px;
-            background: linear-gradient(135deg, var(--navy), var(--blue));
+            background: var(--brand);
             align-self: flex-start;
-            transition: opacity 0.2s, transform 0.2s;
+            transition: transform 0.25s ease;
         }
 
         .project-link:hover {
-            opacity: 0.9;
-            transform: translateX(3px);
-            color: var(--white);
+            transform: translateX(4px);
+            color: var(--gold-light);
         }
 
-        /* ── Empty state ── */
-        .empty-message {
-            color: var(--muted);
-            font-style: italic;
-            font-size: 0.92rem;
-            padding: 0.5rem 0;
-        }
-
-        /* ── Footer ── */
+        /* Footer */
         footer {
             text-align: center;
-            padding: 2rem 1.5rem 2.5rem;
-            background: var(--navy);
-            color: rgba(255, 255, 255, 0.6);
+            padding: 2.5rem 1.5rem 3rem;
+            background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+            color: rgba(255, 255, 255, 0.55);
             font-size: 0.85rem;
+            border-top: 1px solid var(--border);
         }
 
-        footer p span {
-            color: var(--gold);
-        }
+        footer span { color: #93c5fd; }
 
-        /* ── Mobile ── */
         @media (max-width: 640px) {
             .navbar-wrap { padding: 0.5rem 1rem 0; }
-
-            .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-                border-radius: 20px;
-            }
-
+            .navbar { flex-direction: column; align-items: flex-start; border-radius: 20px; }
             .navbar-links { width: 100%; }
-
             .hero { padding: 2.5rem 0 4.5rem; }
-
             section { padding: 1.75rem 1.25rem; }
-
             .projects-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
     <div class="navbar-wrap">
         <nav class="navbar">
             <a href="#bio" class="navbar-brand">
                 <span class="brand-icon">P</span>
-                {% if bios %}
-                    {{ bios.0.name }}
-                {% else %}
-                    My Portfolio
-                {% endif %}
+                {% if bio %}{{ bio.name }}{% else %}My Portfolio{% endif %}
             </a>
             <ul class="navbar-links">
                 <li><a href="#bio">Bio</a></li>
@@ -519,18 +459,16 @@
         </nav>
     </div>
 
-    <!-- Bio hero -->
     <header class="hero" id="bio">
         <div class="hero-glow hero-glow-1"></div>
         <div class="hero-glow hero-glow-2"></div>
+        <div class="hero-glow hero-glow-3"></div>
         <div class="container hero-inner">
-            {% if bios %}
-                {% for bio in bios %}
-                    <span class="hero-badge">Available for opportunities</span>
-                    <h1>{{ bio.name }}</h1>
-                    <p class="job-title">{{ bio.job_title }}</p>
-                    <p class="bio-text">{{ bio.professional_description }}</p>
-                {% endfor %}
+            {% if bio %}
+                <span class="hero-badge">Available for opportunities</span>
+                <h1>{{ bio.name }}</h1>
+                <p class="job-title">{{ bio.job_title }}</p>
+                <p class="bio-text">{{ bio.professional_description }}</p>
             {% else %}
                 <span class="hero-badge">Portfolio</span>
                 <h1>Welcome to My Portfolio</h1>
@@ -541,7 +479,6 @@
 
     <main class="container">
 
-        <!-- Education -->
         <section id="education">
             <div class="section-header">
                 <div class="section-icon">🎓</div>
@@ -558,15 +495,9 @@
                         <p class="meta">
                             {{ item.institution }} &middot;
                             {{ item.start_date|date:"M Y" }}
-                            {% if item.end_date %}
-                                – {{ item.end_date|date:"M Y" }}
-                            {% else %}
-                                – Present
-                            {% endif %}
+                            {% if item.end_date %}– {{ item.end_date|date:"M Y" }}{% else %}– Present{% endif %}
                         </p>
-                        {% if item.description %}
-                            <p>{{ item.description }}</p>
-                        {% endif %}
+                        {% if item.description %}<p>{{ item.description }}</p>{% endif %}
                     </div>
                 {% endfor %}
             {% else %}
@@ -574,7 +505,6 @@
             {% endif %}
         </section>
 
-        <!-- Skills -->
         <section id="skills">
             <div class="section-header">
                 <div class="section-icon">⚡</div>
@@ -589,15 +519,9 @@
                     {% for skill in skills %}
                         <div class="skill-item">
                             <h3>{{ skill.name }}</h3>
-                            {% if skill.proficiency_level %}
-                                <span class="badge">{{ skill.proficiency_level }}</span>
-                            {% endif %}
-                            {% if skill.category %}
-                                <p class="meta">{{ skill.category }}</p>
-                            {% endif %}
-                            {% if skill.description %}
-                                <p>{{ skill.description }}</p>
-                            {% endif %}
+                            {% if skill.proficiency_level %}<span class="badge">{{ skill.proficiency_level }}</span>{% endif %}
+                            {% if skill.category %}<p class="meta">{{ skill.category }}</p>{% endif %}
+                            {% if skill.description %}<p>{{ skill.description }}</p>{% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -606,7 +530,6 @@
             {% endif %}
         </section>
 
-        <!-- Experience -->
         <section id="experience">
             <div class="section-header">
                 <div class="section-icon">💼</div>
@@ -619,24 +542,11 @@
             {% if experiences %}
                 {% for experience in experiences %}
                     <div class="experience-item">
-                        <h3>
-                            {{ experience.title }}
-                            {% if experience.is_project %}
-                                <span class="tag tag-project">Project</span>
-                            {% else %}
-                                <span class="tag tag-work">Work</span>
-                            {% endif %}
-                        </h3>
-                        {% if experience.company %}
-                            <p class="meta">{{ experience.company }}</p>
-                        {% endif %}
+                        <h3>{{ experience.title }}</h3>
+                        {% if experience.company %}<p class="meta">{{ experience.company }}</p>{% endif %}
                         <p class="meta">
                             {{ experience.start_date|date:"M Y" }}
-                            {% if experience.end_date %}
-                                – {{ experience.end_date|date:"M Y" }}
-                            {% else %}
-                                – Present
-                            {% endif %}
+                            {% if experience.end_date %}– {{ experience.end_date|date:"M Y" }}{% else %}– Present{% endif %}
                         </p>
                         <p>{{ experience.description }}</p>
                     </div>
@@ -646,7 +556,6 @@
             {% endif %}
         </section>
 
-        <!-- Projects -->
         <section id="projects">
             <div class="section-header">
                 <div class="section-icon">🚀</div>
@@ -678,11 +587,7 @@
     </main>
 
     <footer>
-        {% if bios %}
-            <p>&copy; {% now "Y" %} <span>{{ bios.0.name }}</span> &mdash; Built with Django</p>
-        {% else %}
-            <p>&copy; {% now "Y" %} <span>My Portfolio</span> &mdash; Built with Django</p>
-        {% endif %}
+        <p>&copy; {% now "Y" %} <span>{% if bio %}{{ bio.name }}{% else %}My Portfolio{% endif %}</span> &mdash; Built with Django</p>
     </footer>
 
 </body>

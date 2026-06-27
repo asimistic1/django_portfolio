@@ -7,10 +7,10 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     description = models.TextField()
-    is_project = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'experience'
+        ordering = ['-start_date']
 
     def __str__(self):
         return self.title

@@ -11,6 +11,7 @@ class Education(models.Model):
 
     class Meta:
         verbose_name_plural = 'education'
+        ordering = ['-start_date']
 
     def __str__(self):
         return f'{self.degree} - {self.institution}'
